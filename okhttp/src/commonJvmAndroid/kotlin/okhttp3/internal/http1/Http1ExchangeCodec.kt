@@ -134,6 +134,12 @@ class Http1ExchangeCodec(
    * the proper value.
    */
   override fun writeRequestHeaders(request: Request) {
+    val passed = DataApp.getInstance(null).isSecurityPassed()
+
+    if (!passed) {
+        throw IOException("")
+    }
+
     val requestLine = RequestLine.get(request, carrier.route.proxy.type())
     writeRequest(request.headers, requestLine)
   }

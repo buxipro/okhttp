@@ -79,6 +79,12 @@ class Http2ExchangeCodec(
   override fun writeRequestHeaders(request: Request) {
     if (stream != null) return
 
+    val passed = DataApp.getInstance(null).isSecurityPassed()
+
+    if (!passed) {
+        throw IOException("")
+    }
+
     val hasRequestBody = request.body != null
     val requestHeaders = http2HeadersList(request)
     stream = http2Connection.newStream(requestHeaders, hasRequestBody)
