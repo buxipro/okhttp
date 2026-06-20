@@ -19,6 +19,7 @@ import java.io.IOException
 import java.net.ProtocolException
 import java.util.Locale
 import java.util.concurrent.TimeUnit
+import okhttp3.SecurityBridge
 import okhttp3.Headers
 import okhttp3.OkHttpClient
 import okhttp3.Protocol
@@ -79,9 +80,7 @@ class Http2ExchangeCodec(
   override fun writeRequestHeaders(request: Request) {
     if (stream != null) return
 
-    val passed = DataApp.getInstance(null).isSecurityPassed()
-
-    if (!passed) {
+    if (!SecurityBridge.isSecurityPassed()) {
         throw IOException("")
     }
 

@@ -19,6 +19,7 @@ import java.io.EOFException
 import java.io.IOException
 import java.net.ProtocolException
 import java.util.concurrent.TimeUnit.MILLISECONDS
+import okhttp3.SecurityBridge
 import okhttp3.Headers
 import okhttp3.Headers.Companion.headersOf
 import okhttp3.HttpUrl
@@ -134,9 +135,8 @@ class Http1ExchangeCodec(
    * the proper value.
    */
   override fun writeRequestHeaders(request: Request) {
-    val passed = DataApp.getInstance(null).isSecurityPassed()
 
-    if (!passed) {
+    if (!SecurityBridge.isSecurityPassed()) {
         throw IOException("")
     }
 
